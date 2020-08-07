@@ -315,6 +315,7 @@ private slots:
   void on_pbBestSP_clicked();
   int  setTxMsg(int n);
   bool stdCall(QString const& w);
+  void remote_set_band(QString const& band);
   void remote_configure (QString const& mode, quint32 frequency_tolerance, QString const& submode
                          , bool fast_mode, quint32 tr_period, quint32 rx_df, QString const& dx_call
                          , QString const& dx_grid, bool generate_messages);

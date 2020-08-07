@@ -563,6 +563,7 @@ MainWindow::MainWindow(QDir const& temp_directory, bool multiple,
   connect (m_messageClient, &MessageClient::highlight_callsign, ui->decodedTextBrowser, &DisplayText::highlight_callsign);
   connect (m_messageClient, &MessageClient::switch_configuration, m_multi_settings, &MultiSettings::select_configuration);
   connect (m_messageClient, &MessageClient::configure, this, &MainWindow::remote_configure);
+  connect (m_messageClient, &MessageClient::set_band, this, &MainWindow::remote_set_band);
 
   // Hook up WSPR band hopping
   connect (ui->band_hopping_schedule_push_button, &QPushButton::clicked
@@ -7650,7 +7651,10 @@ void MainWindow::postWSPRDecode (bool is_new, QStringList parts)
 
 void MainWindow::networkError (QString const& e)
 {
+  QString x = e; // 'use' the argument
   if (m_splash && m_splash->isVisible ()) m_splash->hide ();
+
+/**
   if (MessageBox::Retry == MessageBox::warning_message (this, tr ("Network Error")
                                                         , tr ("Error: %1\nUDP server %2:%3")
                                                         .arg (e)
@@ -7660,9 +7664,10 @@ void MainWindow::networkError (QString const& e)
                                                         , MessageBox::Cancel | MessageBox::Retry
                                                         , MessageBox::Cancel))
     {
+**/
       // retry server lookup
       m_messageClient->set_server (m_config.udp_server_name ());
-    }
+//    }
 }
 
 void MainWindow::on_syncSpinBox_valueChanged(int n)
@@ -9006,6 +9011,14 @@ void MainWindow::set_mode (QString const& mode)
     else if ("WSPR" == mode) on_actionWSPR_triggered ();
     else if ("WSPR-LF" == mode) on_actionWSPR_LF_triggered ();
     else if ("Echo" == mode) on_actionEcho_triggered ();
+}
+
+void MainWindow::remote_set_band(QString const& band) {
+  int sel = ui->bandComboBox->findText(band, Qt::MatchContains);
+  if (-1 != sel && ui->bandComboBox->currentIndex() != sel) {
+    ui->bandComboBox->setCurrentIndex(sel);
+    this->on_bandComboBox_activated(sel);
+  }
 }
 
 void MainWindow::remote_configure (QString const& mode, quint32 frequency_tolerance

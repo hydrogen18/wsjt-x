@@ -522,6 +522,7 @@ namespace NetworkMessage
       HighlightCallsign,
       SwitchConfiguration,
       Configure,
+      SetBand,
       maximum_message_type_     // ONLY add new message types
                                 // immediately before here
     };

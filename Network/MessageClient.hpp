@@ -123,6 +123,8 @@ public:
                            , bool fast_mode, quint32 tr_period, quint32 rx_df, QString const& dx_call
                            , QString const& dx_grid, bool generate_messages);
 
+  Q_SIGNAL void set_band(QString const& band);
+
   // this signal is emitted when network errors occur or if a host
   // lookup fails
   Q_SIGNAL void error (QString const&) const;

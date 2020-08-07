@@ -314,7 +314,15 @@ void MessageClient::impl::parse_message (QByteArray const& msg)
                   }
               }
               break;
-
+            case NetworkMessage::SetBand:
+              {
+               QByteArray band;
+               in >> band;
+               if (check_status(in) != Fail) {
+                 Q_EMIT self_->set_band (QString::fromUtf8(band));
+               }
+              }
+              break;
             default:
               // Ignore
               //
